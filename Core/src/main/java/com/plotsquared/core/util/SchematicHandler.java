@@ -565,7 +565,7 @@ public abstract class SchematicHandler {
     }
 
     private void writeSchematicData(
-            final @NonNull Map<String, Tag> schematic,
+            final @NonNull Map<String, Tag<?, ?>> schematic,
             final @NonNull Map<String, Integer> palette,
             final @NonNull Map<String, Integer> biomePalette,
             final @NonNull List<CompoundTag> tileEntities,
@@ -574,10 +574,10 @@ public abstract class SchematicHandler {
     ) {
         schematic.put("PaletteMax", new IntTag(palette.size()));
 
-        Map<String, Tag> paletteTag = new HashMap<>();
+        Map<String, Tag<?, ?>> paletteTag = new HashMap<>();
         palette.forEach((key, value) -> paletteTag.put(key, new IntTag(value)));
-
         schematic.put("Palette", new CompoundTag(paletteTag));
+
         schematic.put("BlockData", new ByteArrayTag(buffer.toByteArray()));
         schematic.put("BlockEntities", new ListTag(CompoundTag.class, tileEntities));
 
@@ -587,7 +587,7 @@ public abstract class SchematicHandler {
 
         schematic.put("BiomePaletteMax", new IntTag(biomePalette.size()));
 
-        Map<String, Tag> biomePaletteTag = new HashMap<>();
+        Map<String, Tag<?, ?>> biomePaletteTag = new HashMap<>();
         biomePalette.forEach((key, value) -> biomePaletteTag.put(key, new IntTag(value)));
 
         schematic.put("BiomePalette", new CompoundTag(biomePaletteTag));
@@ -595,8 +595,8 @@ public abstract class SchematicHandler {
     }
 
     @NonNull
-    private Map<String, Tag> initSchematic(short width, short height, short length) {
-        Map<String, Tag> schematic = new HashMap<>();
+    private Map<String, Tag<?, ?>> initSchematic(short width, short height, short length) {
+        Map<String, Tag<?, ?>> schematic = new HashMap<>();
         schematic.put("Version", new IntTag(2));
         schematic.put(
                 "DataVersion",
@@ -607,7 +607,7 @@ public abstract class SchematicHandler {
                         .getDataVersion())
         );
 
-        Map<String, Tag> metadata = new HashMap<>();
+        Map<String, Tag<?, ?>> metadata = new HashMap<>();
         metadata.put("WEOffsetX", new IntTag(0));
         metadata.put("WEOffsetY", new IntTag(0));
         metadata.put("WEOffsetZ", new IntTag(0));
@@ -659,7 +659,7 @@ public abstract class SchematicHandler {
             final int length = aabb.getLength();
             final boolean multipleRegions = regions.size() > 1;
 
-            Map<String, Tag> schematic = initSchematic((short) width, (short) height, (short) length);
+            Map<String, Tag<?, ?>> schematic = initSchematic((short) width, (short) height, (short) length);
 
             Map<String, Integer> palette = new HashMap<>();
             Map<String, Integer> biomePalette = new HashMap<>();
@@ -733,8 +733,8 @@ public abstract class SchematicHandler {
                                     }
                                     BaseBlock block = aabb.getWorld().getFullBlock(point);
                                     if (block.getNbtData() != null) {
-                                        Map<String, Tag> values = new HashMap<>();
-                                        for (Map.Entry<String, Tag> entry : block.getNbtData().getValue().entrySet()) {
+                                        Map<String, Tag<?, ?>> values = new HashMap<>();
+                                        for (Map.Entry<String, Tag<?, ?>> entry : block.getNbtData().getValue().entrySet()) {
                                             values.put(entry.getKey(), entry.getValue());
                                         }
 

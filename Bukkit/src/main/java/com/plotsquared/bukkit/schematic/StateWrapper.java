@@ -204,9 +204,9 @@ public class StateWrapper {
                 if (!(state instanceof Container container)) {
                     return false;
                 }
-                List<Tag> itemsTag = this.tag.getListTag("Items").getValue();
+                List<? extends Tag<?, ?>> itemsTag = this.tag.getListTag("Items").getValue();
                 Inventory inv = container.getSnapshotInventory();
-                for (Tag itemTag : itemsTag) {
+                for (Tag<?, ?> itemTag : itemsTag) {
                     CompoundTag itemComp = (CompoundTag) itemTag;
                     ItemType type = ItemType.REGISTRY.get(itemComp.getString("id").toLowerCase());
                     if (type == null) {
@@ -285,10 +285,8 @@ public class StateWrapper {
             }
             case "banner" -> {
                 if (state instanceof Banner banner) {
-                    List<Tag> patterns = this.tag.getListTag("Patterns").getValue();
-                    if (patterns == null || patterns.isEmpty()) {
-                        return false;
-                    }
+                    List<? extends Tag<?, ?>> patterns = this.tag.getListTag("Patterns").getValue();
+                    if (patterns == null || patterns.isEmpty()) return false;
                     banner.setPatterns(patterns.stream().map(t -> (CompoundTag) t).map(compoundTag -> {
                         DyeColor color = DyeColor.getByWoolData((byte) compoundTag.getInt("Color"));
                         PatternType patternType = PatternType.getByIdentifier(compoundTag.getString("Pattern"));
@@ -318,7 +316,7 @@ public class StateWrapper {
         List<CompoundTag> tags = new ArrayList<>();
         for (int i = 0; i < items.length; ++i) {
             if (items[i] != null) {
-                Map<String, Tag> tagData = serializeItem(items[i]);
+                Map<String, Tag<?, ?>> tagData = serializeItem(items[i]);
                 tagData.put("Slot", new ByteTag((byte) i));
                 tags.add(new CompoundTag(tagData));
             }
@@ -326,20 +324,20 @@ public class StateWrapper {
         return tags;
     }
 
-    public Map<String, Tag> serializeItem(ItemStack item) {
-        Map<String, Tag> data = new HashMap<>();
+    public Map<String, Tag<?, ?>> serializeItem(ItemStack item) {
+        Map<String, Tag<?, ?>> data = new HashMap<>();
         data.put("id", new StringTag(item.getType().name()));
         data.put("Damage", new ShortTag(item.getDurability()));
         data.put("Count", new ByteTag((byte) item.getAmount()));
         if (!item.getEnchantments().isEmpty()) {
             List<CompoundTag> enchantmentList = new ArrayList<>();
             for (Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()) {
-                Map<String, Tag> enchantment = new HashMap<>();
+                Map<String, Tag<?, ?>> enchantment = new HashMap<>();
                 enchantment.put("id", new StringTag(entry.getKey().toString()));
                 enchantment.put("lvl", new ShortTag(entry.getValue().shortValue()));
                 enchantmentList.add(new CompoundTag(enchantment));
             }
-            Map<String, Tag> auxData = new HashMap<>();
+            Map<String, Tag<?, ?>> auxData = new HashMap<>();
             auxData.put("ench", new ListTag(CompoundTag.class, enchantmentList));
             data.put("tag", new CompoundTag(auxData));
         }

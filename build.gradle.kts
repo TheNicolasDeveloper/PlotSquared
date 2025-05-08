@@ -1,9 +1,11 @@
 import com.diffplug.gradle.spotless.SpotlessPlugin
 import com.github.jengelman.gradle.plugins.shadow.ShadowPlugin
+import com.vanniktech.maven.publish.MavenPublishPlugin
 import com.vanniktech.maven.publish.SonatypeHost
 import groovy.json.JsonSlurper
 import xyz.jpenilla.runpaper.task.RunServer
 import java.net.URI
+import kotlin.system.exitProcess
 
 plugins {
     java
@@ -12,13 +14,16 @@ plugins {
 
     alias(libs.plugins.shadow)
     alias(libs.plugins.spotless)
-    alias(libs.plugins.grgit)
+
+    id("org.ajoberstar.grgit") version "5.3.0"
+
     alias(libs.plugins.publish)
 
     eclipse
     idea
 
     alias(libs.plugins.runPaper)
+    id("com.github.ben-manes.versions") version "0.52.0"
 }
 
 group = "com.intellectualsites.plotsquared"
@@ -31,7 +36,7 @@ if (!File("$rootDir/.git").exists()) {
     If you need assistance, consult the GitHub docs: https://docs.github.com/get-started/quickstart/fork-a-repo
     **************************************************************************************
     """.trimIndent()
-    ).also { kotlin.system.exitProcess(1) }
+    ).also { exitProcess(1) }
 }
 
 subprojects {
@@ -58,7 +63,7 @@ subprojects {
     apply {
         plugin<JavaPlugin>()
         plugin<JavaLibraryPlugin>()
-        plugin<com.vanniktech.maven.publish.MavenPublishPlugin>()
+        plugin<MavenPublishPlugin>()
         plugin<ShadowPlugin>()
         plugin<SpotlessPlugin>()
         plugin<SigningPlugin>()
@@ -206,7 +211,7 @@ tasks.getByName<Jar>("jar") {
     enabled = false
 }
 
-val supportedVersions = listOf("1.19.4", "1.20.6", "1.21.1", "1.21.3", "1.21.4")
+val supportedVersions = listOf("1.19.4", "1.20.6", "1.21.1", "1.21.3", "1.21.4", "1.21.5")
 tasks {
     register("cacheLatestFaweArtifact") {
         val lastSuccessfulBuildUrl = uri("https://ci.athion.net/job/FastAsyncWorldEdit/lastSuccessfulBuild/api/json").toURL()

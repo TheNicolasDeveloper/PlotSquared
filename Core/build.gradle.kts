@@ -1,5 +1,9 @@
 import java.time.format.DateTimeFormatter
 
+plugins {
+    id("org.ajoberstar.grgit") version "5.3.0"
+}
+
 dependencies {
     // Expected everywhere.
     compileOnlyApi(libs.checkerqual)

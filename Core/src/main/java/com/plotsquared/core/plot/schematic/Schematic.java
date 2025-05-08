@@ -36,7 +36,7 @@ public class Schematic {
 
     // Lossy but fast
     private final Clipboard clipboard;
-    private Map<String, Tag> flags = new HashMap<>();
+    private Map<String, Tag<?, ?>> flags = new HashMap<>();
 
     public Schematic(final Clipboard clip) {
         this.clipboard = clip;
@@ -63,11 +63,11 @@ public class Schematic {
         return this.clipboard;
     }
 
-    public Map<String, Tag> getFlags() {
+    public Map<String, Tag<?, ?>> getFlags() {
         return this.flags;
     }
 
-    public void setFlags(Map<String, Tag> flags) {
+    public void setFlags(Map<String, Tag<?, ?>> flags) {
         this.flags = flags == null ? new HashMap<>() : flags;
     }
 

@@ -1,18 +1,18 @@
 [versions]
 # Platform expectations
-paper = "1.20.4-R0.1-SNAPSHOT"
+paper = "1.21.5-R0.1-SNAPSHOT"
 guice = "7.0.0"
 spotbugs = "4.9.3"
 checkerqual = "3.49.3"
-gson = "2.10"
-guava = "31.1-jre"
-snakeyaml = "2.0"
+gson = "2.11.0"
+guava = "33.3.1-jre"
+snakeyaml = "2.4"
 adventure = "4.21.0"
 adventure-bukkit = "4.3.4"
 log4j = "2.19.0"
 
 # Plugins
-worldedit = "7.2.20"
+worldedit = "7.3.11"
 fawe = "2.13.0"
 placeholderapi = "2.11.6"
 luckperms = "5.4"
@@ -33,14 +33,13 @@ vault = "1.7.1"
 serverlib = "2.3.7"
 
 # Gradle plugins
-shadow = "8.3.6"
-grgit = "4.1.1"
+shadow = "8.3.6" # 9.x is beta, stick to 8 for now
+grgit = "5.3.0"
 spotless = "7.0.3"
 publish = "0.31.0"
 runPaper = "2.3.1"
 
 [libraries]
-# Platform expectations
 paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
 guice = { group = "com.google.inject", name = "guice", version.ref = "guice" }
 guiceassistedinject = { group = "com.google.inject.extensions", name = "guice-assistedinject", version.ref = "guice" }

@@ -267,14 +267,14 @@ public abstract class WorldUtil {
                         ZipEntry ze = new ZipEntry("world" + File.separator + dat.getName());
                         zos.putNextEntry(ze);
                         try (NBTInputStream nis = new NBTInputStream(new GZIPInputStream(new FileInputStream(dat)))) {
-                            Map<String, Tag> tag = ((CompoundTag) nis.readNamedTag().getTag()).getValue();
-                            Map<String, Tag> newMap = new HashMap<>();
-                            for (Map.Entry<String, Tag> entry : tag.entrySet()) {
+                            Map<String, Tag<?, ?>> tag = ((CompoundTag) nis.readNamedTag().getTag()).getValue();
+                            Map<String, Tag<?, ?>> newMap = new HashMap<>();
+                            for (Map.Entry<String, Tag<?, ?>> entry : tag.entrySet()) {
                                 if (!entry.getKey().equals("Data")) {
                                     newMap.put(entry.getKey(), entry.getValue());
                                     continue;
                                 }
-                                Map<String, Tag> data = new HashMap<>(((CompoundTag) entry.getValue()).getValue());
+                                Map<String, Tag<?, ?>> data = new HashMap<>(((CompoundTag) entry.getValue()).getValue());
                                 data.put("SpawnX", new IntTag(home.getX()));
                                 data.put("SpawnY", new IntTag(home.getY()));
                                 data.put("SpawnZ", new IntTag(home.getZ()));
